@@ -68,7 +68,8 @@ nueva_base=full_join(caracteristicas_generales,ocupados,by=c('directorio','secue
 View(nueva_base)
 
 #Descriptivas
-
+nueva_base[is.na(nueva_base)] = 0
+summary(nueva_base$Oci)
 
 #Guardar la base
 saveRDS(object = nueva_base , file = "data/output/NuevaBase.rds")
