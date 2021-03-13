@@ -71,6 +71,28 @@ View(nueva_base)
 nueva_base[is.na(nueva_base)] = 0
 summary(nueva_base$Oci)
 
+#Número de ocupados:
+#-Por edad
+nueva_base %>%  group_by(P6040)%>% summarise(media=mean(Ocupados), varz=var(Ocupados),dsvest=sd(Ocupados), total=sum(Ocupados))
+#-Por sexo
+nueva_base %>% group_by(P6020) %>%  summarise(media=mean(Ocupados), varz=var(Ocupados),dsvest=sd(Ocupados), total=sum(Ocupados))
+#-Por tipo de contrato
+nueva_base %>% group_by(P6430) %>%  summarise(media=mean(Ocupados), varz=var(Ocupados),dsvest=sd(Ocupados), total=sum(Ocupados))
+#-Urbano/Rural  
+nueva_base %>% group_by(area.x) %>% summarise(media=mean(Ocupados), varz=var(Ocupados),dsvest=sd(Ocupados), total=sum(Ocupados))
+
+#Ingresos laborales:
+a=subset(nueva_base,is.na(P6750)==F)
+
+#-Por edad
+a %>%  group_by(P6040)%>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
+#-Por sexo
+a %>% group_by(P6020) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
+#-Por tipo de contrato
+a %>% group_by(P6430) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
+#-Urbano/Rural  
+a %>% group_by(area.x) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
+
 
 #Guardar la base
 saveRDS(object = nueva_base , file = "data/output/NuevaBase.rds")
