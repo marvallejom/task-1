@@ -71,6 +71,7 @@ View(nueva_base)
 nueva_base[is.na(nueva_base)] = 0
 summary(nueva_base$Oci)
 
+
 #Guardar la base
 saveRDS(object = nueva_base , file = "data/output/NuevaBase.rds")
 
