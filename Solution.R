@@ -1,7 +1,7 @@
 #==============================================================================#
 # Autores: Maria Vallejo, Andrea Cortes, Miguel Castillo
 # # Fecha elaboracion:08 de marzo de 2021
-# Ultima modificacion: 12 de marzo de 2021
+# Ultima modificacion: 13 de marzo de 2021
 # Version de R: 4.0.3
 #==============================================================================#
 pacman::p_load(tidyverse,viridis,forcats,gapminder)
@@ -66,9 +66,7 @@ ocupados=readRDS(file='data/input/2019/Cabecera - Ocupados.rds')
 
 duplicated(caracteristicas_generales$directorio)%>% table()
 duplicated(paste0(caracteristicas_generales$directorio, caracteristicas_generales$secuencia_p))%>% table()
-duplicated(paste0(caracteristicas_generales$directorio, caracteristicas_generales$secuencia_p, caracteristicas_generales$orden))%>% table(
-  
-) #No existen individuos duplicados en caracteristicas_generales
+duplicated(paste0(caracteristicas_generales$directorio, caracteristicas_generales$secuencia_p, caracteristicas_generales$orden))%>% table() #No existen individuos duplicados en caracteristicas_generales
 
 duplicated(paste0(ocupados$directorio,ocupados$secuencia_p,ocupados$orden)) %>% table() #Ocupados son identificadores unicos
 
@@ -77,7 +75,7 @@ nueva_base=full_join(caracteristicas_generales,ocupados,by=c('directorio','secue
 View(nueva_base)
 nueva_base$Ocupados=ifelse(is.na(nueva_base$mes.y), 0, 1) #desempleados=0
 
-#Descriptivas
+#3.2.Descriptivas
 nueva_base[is.na(nueva_base)] = 0
 summary(nueva_base$Oci)
 
@@ -105,31 +103,31 @@ a %>% group_by(P6430) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=s
 a %>% group_by(area.x) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
 
 
-Library(ggplot2)
+library(ggplot2)
 
-#Gráfica edad 
+#Gráfica edad
+jpeg("Gráfica edad.jpeg")
 n3=ggplot(data=nueva_base, aes(x=P6040)) + geom_bar()
 n3
 n4=nueva_base %>% filter() %>% ggplot(aes(x=P6040))+geom_density(fill="#330066", color="#E1AF00", alpha=0.65)
+dev.off()
 
 #Gráfica empleados
-
+jpeg("Gráfica empleados.jpeg")
 n1=ggplot(data=nueva_base, aes(x=as.factor(Ocupados), fill=as.factor(Ocupados)))
 n2= n1+ geom_bar() +scale_fill_hue(c=45)+theme(legend.position = "rigth")+labs(title="Empleados y desempleados", x="Empleados vs. Desempleados")
 n2
+dev.off()
 
 #Gráfica empleados por genero
+jpeg("Gráfica empleados por género.jpeg")
 n5= nueva_base %>% group_by(P6020) %>% summarise(total=sum(Ocupados)) %>% ggplot(data=., aes(x=P6020,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("genero")+ylab("Cantidad personas empleadas")+theme_bw()
+n5
+dev.off()
 
 #Gráfica empleados por edad
+jpeg("Gráfica empleados por edad.jpeg")
 n6=nueva_base %>% group_by(P6040) %>% summarise(total=sum(Ocupados)) %>% ggplot(data=., aes(x=P6040,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("edad")+ylab("Cantidad personas empleadas")+theme_bw()
-
-#Gráfica ingresos por genero
-n7=nueva_base %>% group_by(P6020) %>% summarise(total=sum(P6750)) %>% ggplot(data=., aes(x=P6020,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("genero")+ylab("Ingresos")+theme_bw()
-
-#Grafica ingresos por edad
-n7=nueva_base %>% group_by(P6040) %>% summarise(total=sum(P6750)) %>% ggplot(data=., aes(x=P6040,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("edad")+ylab("Ingresos")+theme_bw()
-
-#Guardar la base
-saveRDS(object = nueva_base , file = "data/output/NuevaBase.rds")
+n6
+dev.off()
 
