@@ -92,8 +92,6 @@ nueva_base %>% group_by(P6430) %>%  summarise(media=mean(Ocupados), varz=var(Ocu
 nueva_base %>% group_by(area.x) %>% summarise(media=mean(Ocupados), varz=var(Ocupados),dsvest=sd(Ocupados), total=sum(Ocupados))
 
 
-
-
 #Ingresos laborales:
 a=subset(nueva_base,is.na(P6750)==F)
 
