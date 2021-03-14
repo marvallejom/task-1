@@ -126,6 +126,12 @@ n5= nueva_base %>% group_by(P6020) %>% summarise(total=sum(Ocupados)) %>% ggplot
 #Gráfica empleados por edad
 n6=nueva_base %>% group_by(P6040) %>% summarise(total=sum(Ocupados)) %>% ggplot(data=., aes(x=P6040,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("edad")+ylab("Cantidad personas empleadas")+theme_bw()
 
+#Gráfica ingresos por genero
+n7=nueva_base %>% group_by(P6020) %>% summarise(total=sum(P6750)) %>% ggplot(data=., aes(x=P6020,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("genero")+ylab("Ingresos")+theme_bw()
+
+#Grafica ingresos por edad
+n7=nueva_base %>% group_by(P6040) %>% summarise(total=sum(P6750)) %>% ggplot(data=., aes(x=P6040,y=total))+geom_bar(stat="identity", fill="#E1AF00", alpha=0.7, width=0.75)+ coord_flip()+xlab("edad")+ylab("Ingresos")+theme_bw()
+
 #Guardar la base
 saveRDS(object = nueva_base , file = "data/output/NuevaBase.rds")
 
