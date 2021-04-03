@@ -4,6 +4,8 @@
 # Ultima modificacion: 13 de marzo de 2021
 # Version de R: 4.0.3
 #==============================================================================#
+
+rm(list=ls()) # es importante limpiar el entorno
 pacman::p_load(tidyverse,viridis,forcats,gapminder)
 
 #1.Vectores
@@ -26,11 +28,18 @@ vector
 #vector que contiene los numeros primos del 1 al 99
 primos
 
+# Comentario:
+cat("El ejercicio pedia 1 vector con los numeros del 1 al 100 y otro con los numeros pares")
+vector = c(1:100)
+vector
+pares = vector[!vector %in% seq(1,99,2)] # Se podía hacer de esta manera
+pares
+
 #2. Limpiar una base de datos
 #Cargar bases de datos
-library(readxl)
+library(readxl) # Es mejor llamar y/o instalar todas las librerias al principio
 
-cultivos= read_excel("data/input/cultivos.xlsx", range = "A9:Y362")
+cultivos= read_excel("data/input/cultivos.xlsx", range = "A9:Y362") # Buen punto lo de cargar solo el rango
 columnas=ncol(cultivos)
 filas=nrow(cultivos)
 
@@ -50,12 +59,18 @@ cultivos[is.na(cultivos)]=0
 View(cultivos)
 
 #Pivotear a formato long
-library(reshape2)
+library(reshape2) # Es mejor llamar y/o instalar todas las librerias al principio
 
 variables=colnames(cultivos[,5:columnas])
 
 resultado=melt(data=cultivos, id.vars = c("CODDEPTO","DEPARTAMENTO","CODMPIO","MUNICIPIO"), measure.vars = variables, value.name = "Hectareas")
 View(resultado)
+
+# Nota: este punto se podia hacer asi
+cultivos = read_excel("data/input/cultivos.xlsx", range="A9:Y362") # Buen punto lo de cargar ese rango
+cultivos = subset(cultivos , is.na(CODMPIO)==F)
+cultivos = pivot_longer(data=cultivos , cols="1999":"2019" , names_to="year" , values_to="hectareas")
+cultivos = mutate(cultivos, hectareas = ifelse(is.na(hectareas)==T,0,hectareas))
 
 #3. GEIH
 #3.1. Importar
@@ -103,7 +118,7 @@ a %>% group_by(P6430) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=s
 a %>% group_by(area.x) %>% summarise(media=mean(P6750), varz=var(P6750), dsvest=sd(P6750),total=sum(P6750))
 
 
-library(ggplot2)
+library(ggplot2) # Ya habías llamado la librería al principio del script
 
 #Gráfica edad
 jpeg("Gráfica edad.jpeg")
